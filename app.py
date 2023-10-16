@@ -35,7 +35,7 @@ predicted_values_2023 = model.predict(prediction_data_2023)
 # Menyiapkan aplikasi Streamlit
 st.title('Aplikasi Prediksi Harga Emas')
 st.sidebar.header('Pilih Data')
-option = st.sidebar.selectbox('',('Data Historis', 'Prediksi 2023', 'Data Historis dan Hasil Prediksi 2023'))
+option = st.sidebar.selectbox('', ('Data Historis', 'Prediksi 2023', 'Data Historis dan Hasil Prediksi 2023'))
 
 # Menambahkan penjelasan di aplikasi
 st.write('Aplikasi ini bertujuan untuk memvisualisasikan data historis harga emas dan melakukan prediksi harga emas untuk tahun 2023 menggunakan metode Regresi Random Forest. Pengguna dapat memilih opsi yang ingin dilihat dari sidebar aplikasi.')
@@ -49,7 +49,7 @@ if option == 'Data Historis':
     plt.title('Data Historis Harga Emas')
     plt.xlabel('Tanggal')
     plt.ylabel('Harga Emas (USD)')
-    st.pyplot(plt)
+    st.pyplot()
 
 if option == 'Prediksi 2023':
     st.subheader('Grafik Prediksi Harga Emas Tahun 2023')
@@ -59,7 +59,7 @@ if option == 'Prediksi 2023':
     plt.title('Prediksi Harga Emas Tahun 2023')
     plt.xlabel('Tanggal')
     plt.ylabel('Harga Emas (USD)')
-    st.pyplot(plt)
+    st.pyplot()
 
     # Menampilkan tabel hasil prediksi dengan angka desimal yang dibulatkan
     hasil_prediksi_df = pd.DataFrame({
