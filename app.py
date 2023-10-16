@@ -29,11 +29,9 @@ prediction_data_2023 = pd.DataFrame({
     'Day': dates_2023.day
 })
 
-
-# Mengonversi DataFrame menjadi array numpy sebelum prediksi
+# Melakukan prediksi harga emas untuk tahun 2023
 prediction_array_2023 = prediction_data_2023.to_numpy()
 predicted_values_2023 = model.predict(prediction_array_2023)
-
 
 # Menyiapkan aplikasi Streamlit
 st.title('Aplikasi Prediksi Harga Emas')
@@ -48,7 +46,7 @@ if option == 'Data Historis':
     st.subheader('Grafik Harga Emas Sebelumnya')
     st.write('Grafik ini menunjukkan perubahan harga emas dari waktu ke waktu berdasarkan data historis yang disediakan.')
     plt.figure(figsize=(10, 6))
-    plt.plot(data_emas['Date'], data_emas['Close'], color='black')
+    plt.plot(data_emas['Date'].values, data_emas['Close'].values, color='black')  # Menggunakan values untuk mengonversi ke array numpy
     plt.title('Data Historis Harga Emas')
     plt.xlabel('Tanggal')
     plt.ylabel('Harga Emas (USD)')
@@ -77,7 +75,7 @@ if option == 'Data Historis dan Hasil Prediksi 2023':
     st.subheader('Grafik Harga Emas dan Prediksi Tahun 2023')
     st.write('Grafik ini membandingkan data historis harga emas dengan prediksi harga emas untuk tahun 2023.')
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(data_emas['Date'], data_emas['Close'], color='black', label='Data Historis Harga Emas')
+    ax.plot(data_emas['Date'].values, data_emas['Close'].values, color='black', label='Data Historis Harga Emas')  # Menggunakan values untuk mengonversi ke array numpy
     ax.plot(dates_2023, predicted_values_2023, color='red', label='Prediksi 2023')
     ax.set_title('Data Historis dan Prediksi Harga Emas Tahun 2023')
     ax.set_xlabel('Tanggal')
