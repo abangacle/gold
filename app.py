@@ -45,22 +45,22 @@ st.write('Aplikasi ini bertujuan untuk memvisualisasikan data historis harga ema
 if option == 'Data Historis':
     st.subheader('Grafik Harga Emas Sebelumnya')
     st.write('Grafik ini menunjukkan perubahan harga emas dari waktu ke waktu berdasarkan data historis yang disediakan.')
-    plt.figure(figsize=(10, 6))
-    plt.plot(data_emas['Date'].values, data_emas['Close'].values, color='black')  # Menggunakan values untuk mengonversi ke array numpy
-    plt.title('Data Historis Harga Emas')
-    plt.xlabel('Tanggal')
-    plt.ylabel('Harga Emas (USD)')
-    st.pyplot()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(data_emas['Date'].values, data_emas['Close'].values, color='black')  # Menggunakan values untuk mengonversi ke array numpy
+    ax.set_title('Data Historis Harga Emas')
+    ax.set_xlabel('Tanggal')
+    ax.set_ylabel('Harga Emas (USD)')
+    st.pyplot(fig)
 
 if option == 'Prediksi 2023':
     st.subheader('Grafik Prediksi Harga Emas Tahun 2023')
     st.write('Grafik ini memperlihatkan prediksi harga emas untuk tahun 2023 berdasarkan model Regresi Random Forest yang dilatih dengan data historis.')
-    plt.figure(figsize=(10, 6))
-    plt.plot(dates_2023, predicted_values_2023, color='red')
-    plt.title('Prediksi Harga Emas Tahun 2023')
-    plt.xlabel('Tanggal')
-    plt.ylabel('Harga Emas (USD)')
-    st.pyplot()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(dates_2023, predicted_values_2023, color='red')
+    ax.set_title('Prediksi Harga Emas Tahun 2023')
+    ax.set_xlabel('Tanggal')
+    ax.set_ylabel('Harga Emas (USD)')
+    st.pyplot(fig)
 
     # Menampilkan tabel hasil prediksi dengan angka desimal yang dibulatkan
     hasil_prediksi_df = pd.DataFrame({
