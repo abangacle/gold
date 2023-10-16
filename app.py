@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
+import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 
 # Membaca data harga emas
@@ -40,23 +40,26 @@ option = st.sidebar.selectbox('',('Data Historis', 'Prediksi 2023', 'Data Histor
 # Menambahkan penjelasan di aplikasi
 st.write('Aplikasi ini bertujuan untuk memvisualisasikan data historis harga emas dan melakukan prediksi harga emas untuk tahun 2023 menggunakan metode Regresi Random Forest. Pengguna dapat memilih opsi yang ingin dilihat dari sidebar aplikasi.')
 
-# Menampilkan grafik harga emas menggunakan Plotly Express
+# Menampilkan grafik harga emas
 if option == 'Data Historis':
     st.subheader('Grafik Harga Emas Sebelumnya')
     st.write('Grafik ini menunjukkan perubahan harga emas dari waktu ke waktu berdasarkan data historis yang disediakan.')
-    fig = px.line(data_emas, x='Date', y='Close', title="Data Historis Harga Emas")
-    fig.update_traces(line_color='black')
-    fig.update_layout(xaxis_title="Tanggal", yaxis_title="Harga Emas (USD)")
-    st.plotly_chart(fig)
+    plt.figure(figsize=(10, 6))
+    plt.plot(data_emas['Date'], data_emas['Close'], color='black')
+    plt.title('Data Historis Harga Emas')
+    plt.xlabel('Tanggal')
+    plt.ylabel('Harga Emas (USD)')
+    st.pyplot(plt)
 
 if option == 'Prediksi 2023':
     st.subheader('Grafik Prediksi Harga Emas Tahun 2023')
     st.write('Grafik ini memperlihatkan prediksi harga emas untuk tahun 2023 berdasarkan model Regresi Random Forest yang dilatih dengan data historis.')
-    fig = px.line(x=dates_2023, y=predicted_values_2023, title="Prediksi Harga Emas Tahun 2023")
-    fig.update_traces(line_color='red')
-    fig.update_layout(xaxis_title="Tanggal", yaxis_title="Harga Emas (USD)")
-    fig.update_yaxes(tickangle=-45) # Menyesuaikan rotasi teks pada sumbu y
-    st.plotly_chart(fig)
+    plt.figure(figsize=(10, 6))
+    plt.plot(dates_2023, predicted_values_2023, color='red')
+    plt.title('Prediksi Harga Emas Tahun 2023')
+    plt.xlabel('Tanggal')
+    plt.ylabel('Harga Emas (USD)')
+    st.pyplot(plt)
 
     # Menampilkan tabel hasil prediksi dengan angka desimal yang dibulatkan
     hasil_prediksi_df = pd.DataFrame({
@@ -66,13 +69,15 @@ if option == 'Prediksi 2023':
     st.subheader('Tabel Hasil Prediksi Harga Emas Tahun 2023')
     st.write('Tabel ini menampilkan hasil prediksi harga emas untuk setiap tanggal dalam tahun 2023.')
     st.table(hasil_prediksi_df)
-
+    
 if option == 'Data Historis dan Hasil Prediksi 2023':
     st.subheader('Grafik Harga Emas dan Prediksi Tahun 2023')
     st.write('Grafik ini membandingkan data historis harga emas dengan prediksi harga emas untuk tahun 2023.')
-    fig = px.line(data_emas, x='Date', y='Close', title="Data Historis Harga Emas")
-    fig.add_scatter(x=dates_2023, y=predicted_values_2023, mode='lines', name='Prediksi 2023')
-    fig.update_traces(line_color='red', selector=dict(name='Prediksi 2023'))
-    fig.update_layout(xaxis_title="Tanggal", yaxis_title="Harga Emas (USD)")
-    fig.update_yaxes(tickangle=-45) # Menyesuaikan rotasi teks pada sumbu y
-    st.plotly_chart(fig)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(data_emas['Date'], data_emas['Close'], color='black', label='Data Historis Harga Emas')
+    ax.plot(dates_2023, predicted_values_2023, color='red', label='Prediksi 2023')
+    ax.set_title('Data Historis dan Prediksi Harga Emas Tahun 2023')
+    ax.set_xlabel('Tanggal')
+    ax.set_ylabel('Harga Emas (USD)')
+    ax.legend()
+    st.pyplot(fig)
