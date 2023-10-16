@@ -30,7 +30,7 @@ prediction_data_2023 = pd.DataFrame({
 })
 
 # Melakukan prediksi harga emas untuk tahun 2023
-predicted_values_2023 = model.predict(prediction_data_2023)
+predicted_values_2023 = model.predict(prediction_data_2023.values)
 
 # Menyiapkan aplikasi Streamlit
 st.title('Aplikasi Prediksi Harga Emas')
