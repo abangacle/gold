@@ -29,8 +29,11 @@ prediction_data_2023 = pd.DataFrame({
     'Day': dates_2023.day
 })
 
-# Melakukan prediksi harga emas untuk tahun 2023 setelah mengonversi kolom menjadi array NumPy
-predicted_values_2023 = model.predict(prediction_data_2023[['Year', 'Month', 'Day']].to_numpy())
+
+# Mengonversi DataFrame menjadi array numpy sebelum prediksi
+prediction_array_2023 = prediction_data_2023.to_numpy()
+predicted_values_2023 = model.predict(prediction_array_2023)
+
 
 # Menyiapkan aplikasi Streamlit
 st.title('Aplikasi Prediksi Harga Emas')
