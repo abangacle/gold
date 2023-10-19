@@ -14,8 +14,8 @@ data_emas['Month'] = data_emas['Date'].dt.month
 data_emas['Day'] = data_emas['Date'].dt.day
 
 # Membuat fitur dan target
-X = data_emas[['Year', 'Month', 'Day']]
-y = data_emas['Close']
+X = data_emas[['Year', 'Month', 'Day']].values
+y = data_emas['Close'].values
 
 # Membuat model Regresi Random Forest
 model = RandomForestRegressor(n_estimators=100, random_state=42)
@@ -30,8 +30,8 @@ prediction_data_2023 = pd.DataFrame({
 })
 
 # Melakukan prediksi harga emas untuk tahun 2023
-prediction_array_2023 = prediction_data_2023.to_numpy()
-predicted_values_2023 = model.predict(prediction_data_2023)
+prediction_array_2023 = prediction_data_2023[['Year', 'Month', 'Day']].values
+predicted_values_2023 = model.predict(prediction_array_2023)
 
 # Menyiapkan aplikasi Streamlit
 st.title('Aplikasi Prediksi Harga Emas')
