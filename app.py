@@ -14,12 +14,12 @@ data_emas['Month'] = data_emas['Date'].dt.month
 data_emas['Day'] = data_emas['Date'].dt.day
 
 # Membuat fitur dan target
-X = data_emas[['Year', 'Month', 'Day']]
-y = data_emas['Close']
+X = data_emas[['Year', 'Month', 'Day']].values
+y = data_emas['Close'].values
 
 # Membuat model Regresi Random Forest
-model2023 = RandomForestRegressor(n_estimators=100, max_depth=5000, max_leaf_nodes=800, random_state=42)
-model2023.fit(X, y)
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X, y)
 
 # Membuat dataframe untuk setiap tanggal pada tahun 2023
 dates_2023 = pd.date_range(start='2023-01-01', end='2023-12-31', freq='D')
@@ -30,31 +30,16 @@ prediction_data_2023 = pd.DataFrame({
 })
 
 # Melakukan prediksi harga emas untuk tahun 2023
-prediction_array_2023 = prediction_data_2023.to_numpy()
-predicted_values_2023 = model2023.predict(prediction_array_2023)
-
-model2024 = RandomForestRegressor(n_estimators=500, max_depth=10, max_leaf_nodes=2000, random_state=42)
-model2024.fit(X, y)
-
-# Membuat dataframe untuk setiap tanggal pada tahun 2024
-dates_2024 = pd.date_range(start='2024-01-01', end='2024-12-31', freq='D')
-prediction_data_2024 = pd.DataFrame({
-    'Year': dates_2024.year,
-    'Month': dates_2024.month,
-    'Day': dates_2024.day
-})
-
-# Melakukan prediksi harga emas untuk tahun 2024
-prediction_array_2024 = prediction_data_2024.to_numpy()
-predicted_values_2024 = model2024.predict(prediction_array_2024)
+prediction_array_2023 = prediction_data_2023[['Year', 'Month', 'Day']].values
+predicted_values_2023 = model.predict(prediction_array_2023)
 
 # Menyiapkan aplikasi Streamlit
 st.title('Aplikasi Prediksi Harga Emas')
 st.sidebar.header('Pilih Data')
-option = st.sidebar.selectbox('', ('Data Historis', 'Prediksi 2023', 'Prediksi 2024', 'Data Historis dan Hasil Prediksi'))
+option = st.sidebar.selectbox('', ('Data Historis', 'Prediksi 2023', 'Data Historis dan Hasil Prediksi 2023'))
 
 # Menambahkan penjelasan di aplikasi
-st.write('Aplikasi ini bertujuan untuk memvisualisasikan data historis harga emas dan melakukan prediksi harga emas untuk tahun 2023 dan 2024 menggunakan metode Regresi Random Forest. Pengguna dapat memilih opsi yang ingin dilihat dari sidebar aplikasi.')
+st.write('Aplikasi ini bertujuan untuk memvisualisasikan data historis harga emas dan melakukan prediksi harga emas untuk tahun 2023 menggunakan metode Regresi Random Forest. Pengguna dapat memilih opsi yang ingin dilihat dari sidebar aplikasi.')
 
 # Menampilkan grafik harga emas
 if option == 'Data Historis':
@@ -67,58 +52,23 @@ if option == 'Data Historis':
     ax.set_ylabel('Harga Emas (USD)')
     st.pyplot(fig)
 
-# Menampilkan grafik prediksi harga emas untuk tahun 2023
 if option == 'Prediksi 2023':
     st.subheader('Grafik Prediksi Harga Emas Tahun 2023')
     st.write('Grafik ini memperlihatkan prediksi harga emas untuk tahun 2023 berdasarkan model Regresi Random Forest yang dilatih dengan data historis.')
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(dates_2023, predicted_values_2023, color='red')
+    ax.plot(dates_2023.values, predicted_values_2023, color='red')
     ax.set_title('Prediksi Harga Emas Tahun 2023')
     ax.set_xlabel('Tanggal')
     ax.set_ylabel('Harga Emas (USD)')
     st.pyplot(fig)
 
-    # Menampilkan tabel hasil prediksi dengan angka desimal yang dibulatkan
-    hasil_prediksi_df_2023 = pd.DataFrame({
-        'Tanggal': dates_2023,
-        'Harga Emas (USD)': np.round(predicted_values_2023, 2)
-    })
-    st.subheader('Tabel Hasil Prediksi Harga Emas Tahun 2023')
-    st.write('Tabel ini menampilkan hasil prediksi harga emas untuk setiap tanggal dalam tahun 2023.')
-    st.table(hasil_prediksi_df_2023)
-
-# Menampilkan grafik prediksi harga emas untuk tahun 2024
-if option == 'Prediksi 2024':
-    st.subheader('Grafik Prediksi Harga Emas Tahun 2024')
-    st.write('Grafik ini memperlihatkan prediksi harga emas untuk tahun 2024 berdasarkan model Regresi Random Forest yang dilatih dengan data historis.')
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(dates_2024, predicted_values_2024, color='blue')
-    ax.set_title('Prediksi Harga Emas Tahun 2024')
-    ax.set_xlabel('Tanggal')
-    ax.set_ylabel('Harga Emas (USD)')
-    st.pyplot(fig)
-
-    # Menampilkan tabel hasil prediksi dengan angka desimal yang dibulatkan untuk tahun 2024
-    hasil_prediksi_df_2024 = pd.DataFrame({
-        'Tanggal': dates_2024,
-        'Harga Emas (USD)': np.round(predicted_values_2024, 2)
-    })
-    st.subheader('Tabel Hasil Prediksi Harga Emas Tahun 2024')
-    st.write('Tabel ini menampilkan hasil prediksi harga emas untuk setiap tanggal dalam tahun 2024.')
-    st.table(hasil_prediksi_df_2024)
-
-# Menampilkan grafik harga emas dan prediksi untuk tahun 2023
-if option == 'Data Historis dan Hasil Prediksi':
-    st.subheader('Grafik Harga Emas dan Prediksi Tahun 2023-2024')
-    st.write('Grafik ini membandingkan data historis harga emas dengan prediksi harga emas untuk tahun 2023 dan 2024.')
+if option == 'Data Historis dan Hasil Prediksi 2023':
+    st.subheader('Grafik Harga Emas dan Prediksi Tahun 2023')
+    st.write('Grafik ini membandingkan data historis harga emas dengan prediksi harga emas untuk tahun 2023.')
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.plot(data_emas['Date'].values, data_emas['Close'].values, color='black', label='Data Historis Harga Emas')
-    ax.plot(dates_2023, predicted_values_2023, color='red', label='Prediksi 2023')
-    
-    # Menambahkan prediksi untuk tahun 2024
-    ax.plot(dates_2024, predicted_values_2024, color='blue', label='Prediksi 2024')
-    
-    ax.set_title('Data Historis dan Prediksi Harga Emas Tahun 2023-2024')
+    ax.plot(dates_2023.values, predicted_values_2023, color='red', label='Prediksi 2023')
+    ax.set_title('Data Historis dan Prediksi Harga Emas Tahun 2023')
     ax.set_xlabel('Tanggal')
     ax.set_ylabel('Harga Emas (USD)')
     ax.legend()
