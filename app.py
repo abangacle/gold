@@ -90,15 +90,6 @@ if option == 'Prediksi 2024':
     ax.set_ylabel('Harga Emas (USD)')
     st.pyplot(fig)
 
-    # Menampilkan tabel hasil prediksi dengan angka desimal yang dibulatkan untuk tahun 2024
-    hasil_prediksi_df_2024 = pd.DataFrame({
-        'Tanggal': dates_2024,
-        'Harga Emas (USD)': np.round(predicted_values_2024, 2)
-    })
-    st.subheader('Tabel Hasil Prediksi Harga Emas Tahun 2024')
-    st.write('Tabel ini menampilkan hasil prediksi harga emas untuk setiap tanggal dalam tahun 2024.')
-    st.table(hasil_prediksi_df_2024)
-
 # Menampilkan grafik harga emas dan prediksi untuk tahun 2023
 if option == 'Data Historis dan Hasil Prediksi':
     st.subheader('Grafik Harga Emas dan Prediksi Tahun 2023-2024')
